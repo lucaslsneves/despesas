@@ -16,14 +16,12 @@ class Chart extends StatelessWidget {
 
       totalSum = recentTransactions.fold(0, (previousValue, tr) {
         bool sameDay = tr.date.day == weekDay.day;
-        bool sameMonth = tr.date.month == weekDay.month; 
-        bool sameYear = tr.date.year == weekDay.year;  
+        bool sameMonth = tr.date.month == weekDay.month;
+        bool sameYear = tr.date.year == weekDay.year;
 
-        if(sameDay && sameMonth && sameYear){
+        if (sameDay && sameMonth && sameYear) {
           return previousValue + tr.value;
         }
-
-        
 
         return previousValue;
       });
@@ -32,6 +30,12 @@ class Chart extends StatelessWidget {
       print(totalSum);
 
       return {'day': DateFormat.E().format(weekDay)[0], 'value': totalSum};
+    });
+  }
+
+  double get _weekTotalValue {
+    return groupedTransactions.fold(0.0, (acc, item) {
+      return acc + item['value'];
     });
   }
 
@@ -45,11 +49,14 @@ class Chart extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: ListView(
-            scrollDirection: Axis.horizontal,
-            children: groupedTransactions.map((tr) {
-              return ChartBar(label: tr['day'], value: tr['value'],percent: 0,);
-            }).toList()
-            ),
+              scrollDirection: Axis.horizontal,
+              children: groupedTransactions.map((tr) {
+                return ChartBar(
+                  label: tr['day'],
+                  value: tr['value'],
+                  percent: (tr['value'] as double) / _weekTotalValue,
+                );
+              }).toList()),
         ),
       ),
     );

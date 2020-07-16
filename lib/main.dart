@@ -45,7 +45,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Transaction(
       id: 't1',
       title: 'Conta de energia da casa do jaime junior das neves',
-      value: 20000,
+      value: 22,
       date: DateTime.now(),
     ),
     Transaction(

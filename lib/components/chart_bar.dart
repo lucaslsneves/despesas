@@ -9,16 +9,51 @@ class ChartBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(5.0),
-      child: Column(children: [
-        Text('R\$${value.toStringAsFixed(2)}'),
-        SizedBox(height: 5,),
-        Expanded(child: Container(height: 60,width:10, child: null,)),
-        SizedBox(height: 5,),
-        Text('${label}'),
-
-      ]),
+    return Container(
+      width: 100,
+      child: Padding(
+        padding: const EdgeInsets.all(5.0),
+        child: Column(children: [
+          FittedBox(child: Text('R\$ ${value.toStringAsFixed(2)}')),
+          SizedBox(
+            height: 5,
+          ),
+          Expanded(
+              child: Container(
+            height: 60,
+            width: 13,
+            child: Stack(
+              alignment: Alignment.bottomCenter,
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.black12,
+                    border: Border.all(
+                      color: Colors.grey,
+                      width: 1,
+                    ),
+                    borderRadius: BorderRadius.circular(6.5),
+                  ),
+                ),
+                FractionallySizedBox(
+                  heightFactor: percent,
+                  child: Container(
+                     decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      
+                      borderRadius: BorderRadius.circular(6.5),
+                      ),
+                  ),
+                )
+              ],
+            ),
+          )),
+          SizedBox(
+            height: 5,
+          ),
+          Text('${label}'),
+        ]),
+      ),
     );
   }
 }
