@@ -5,9 +5,11 @@ import '../models/transaction.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> transactions;
+  final void Function(String) removeTransaction;
 
   TransactionList({
-    this.transactions
+    this.transactions,
+    this.removeTransaction,
   });
 
 
@@ -21,7 +23,7 @@ class TransactionList extends StatelessWidget {
     ],) : ListView.builder(
       itemCount: transactions.length,
       itemBuilder: (ctx,index) {
-        return TransactionItem(transaction: transactions[index],);
+        return TransactionItem(transaction: transactions[index],removeTransaction:removeTransaction);
       },
     ));
   }

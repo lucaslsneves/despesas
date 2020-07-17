@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'components/transaction_list.dart';
 import 'components/transiction_form.dart';
 import 'components/chart.dart';
@@ -10,6 +13,11 @@ class ExpensesApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: [
+    GlobalMaterialLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate
+  ],
+  supportedLocales: [const Locale('pt', 'BR')],
       home: MyHomePage(),
       theme: ThemeData(
         primarySwatch: Colors.purple,
@@ -25,41 +33,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _transactions = [
-    Transaction(
-      id: 't1',
-      title: 'Novo Tênis',
-      value: 100,
-      date: DateTime.now().subtract(Duration(days: 1)),
-    ),
-    Transaction(
-      id: 't1',
-      title: 'Novo Tênis',
-      value: 100,
-      date: DateTime.now().subtract(Duration(days: 2)),
-    ),Transaction(
-      id: 't1',
-      title: 'Novo Tênis',
-      value: 100,
-      date: DateTime.now().subtract(Duration(days: 3)),
-    ),
-    Transaction(
-      id: 't1',
-      title: 'Conta de energia da casa do jaime junior das neves',
-      value: 22,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 't1',
-      title: 'Novo Tênis',
-      value: 100,
-      date: DateTime.now().subtract(Duration(days: 1)),
-    ),
-    Transaction(
-      id: 't1',
-      title: 'Novo Tênis',
-      value: 310.76,
-      date: DateTime.now().subtract(Duration(days: 1)),
-    ),
+   
   ];
 
 
@@ -69,9 +43,9 @@ class _MyHomePageState extends State<MyHomePage> {
     }).toList();
   }
 
-  onSubmit(String title, double value) {
+  onSubmit(String title, double value,DateTime date) {
     final transaction =
-        Transaction(id: 't4', date: DateTime.now(), title: title, value: value);
+        Transaction(id: Random().nextDouble().toString(), date: date, title: title, value: value);
 
     setState(() {
       _transactions.add(transaction);
@@ -88,6 +62,12 @@ class _MyHomePageState extends State<MyHomePage> {
           return SingleChildScrollView(
               child: TransactionForm(onSubmit: onSubmit));
         });
+  }
+
+  removeTransaction(String id) {
+    setState(() {
+      _transactions.removeWhere((tr) => tr.id == id);
+    });
   }
 
   @override
@@ -109,7 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 Chart(_recentTransactions),
-                TransactionList(transactions: _transactions),
+                TransactionList(transactions: _transactions,removeTransaction: removeTransaction),
               ],
             ),
           ),
